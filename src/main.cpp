@@ -8,7 +8,7 @@ int main() {
 
     const std::vector<std::string> testStrings = {
         "get test1 test1",
-        "save test test",
+        "set test test",
         "set \"this\" \"test\""
     };
 
@@ -47,12 +47,7 @@ int main() {
         }
 
         std::cout << "OPERATOR TYPE " + final << std::endl;
-
-
-
     }
-
-
 
     return 0;
 }

@@ -32,6 +32,7 @@ void Parser::parseTokenStream() {
                         this->ast.setDeleteQuery(delQuery);
                     }
                 break;
+
             case TokenType::IDENTIFIER:
                 // If no operator, then break
                 if (this->ast.getOperatorType() == OperatorType::VOID) {
@@ -52,6 +53,7 @@ void Parser::parseTokenStream() {
                         break;
                 }
                 break;
+
             case TokenType::LITERAL:
                 if (this->ast.getOperatorType() == OperatorType::GET
                     || this->ast.getOperatorType() == OperatorType::DELETE
@@ -61,10 +63,9 @@ void Parser::parseTokenStream() {
                 }
                 this->ast.getSetQuery().setLiteral(currToken);
                 break;
+
             default:
                 break;
-
         }
-
     }
 }
