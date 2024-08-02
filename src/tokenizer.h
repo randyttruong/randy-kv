@@ -5,6 +5,7 @@
 #ifndef TOKENIZER_H
 #define TOKENIZER_H
 #include <string>
+#include <vector>
 
 enum class TokenType {
     KEYWORD,
@@ -24,11 +25,14 @@ class Tokenizer {
 private:
     std::string input;
     size_t pos;
+    std::vector<Token> TokenStream;
 
 public:
     Tokenizer(std::string input, size_t pos);
-
+    void tokenize();
     Token getNextToken();
+    std::vector<Token> getTokenStream();
+    void pushToTokenStream(Token input);
 };
 
 #endif //TOKENIZER_H

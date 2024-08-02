@@ -17,9 +17,11 @@ Token Tokenizer::getNextToken() {
 
     while (pos < length && std::isspace(input[pos])) pos++;
 
-    if (pos == length) {
+    if (pos >= length) {
         finalToken.type = TokenType::END;
+        finalToken.tokenType = "end";
         finalToken.value = "";
+        return finalToken;
     }
 
     // Keywords + Identifiers
@@ -69,6 +71,23 @@ Token Tokenizer::getNextToken() {
     finalToken.type = TokenType::INVALID;
     finalToken.tokenType = "invalid";
     finalToken.value = "-1";
+    pos++;
 
     return finalToken;
 }
+
+void Tokenizer::tokenize() {
+
+    while (true) {
+        Token currentToken = getNextToken();
+        if (currentToken.type == TokenType::END) return;
+        pushToTokenStream(currentToken);
+    };
+
+}
+
+std::vector<Token> Tokenizer::getTokenStream() { return this->TokenStream; }
+void Tokenizer::pushToTokenStream(Token input) {
+    TokenStream.push_back(input);
+}
+

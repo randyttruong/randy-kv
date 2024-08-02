@@ -16,7 +16,8 @@ public:
 };
 
 enum class IdentifierType {
-    VARIABLE
+    VARIABLE,
+    VOID
 };
 
 class Identifier: public ASTNode {
@@ -25,7 +26,9 @@ private:
     std::string name;
 
 public:
-    Identifier(IdentifierType type, std::string name);
+    Identifier();
+    void setType(IdentifierType type);
+    void setName(std::string name);
 };
 
 enum class LiteralType {
@@ -41,8 +44,7 @@ class NumericalLiteral: public Literal {
 private:
     int value;
 public:
-    NumericalLiteral(int value);
-
+    NumericalLiteral();
     void setValue(int value);
 };
 
@@ -50,7 +52,7 @@ class FloatingLiteral: public Literal {
 private:
     float value;
 public:
-    FloatingLiteral(float value);
+    FloatingLiteral();
     void setValue(float value);
 };
 
@@ -58,17 +60,27 @@ class StringLiteral: public Literal {
 private:
     std::string value;
 public:
-    StringLiteral(std::string value);
+    StringLiteral();
     void setValue(std::string value);
 };
 
 enum class OperatorType {
     GET,
     SET,
-    DELETE
+    DELETE,
+    VOID
 };
 
-class GET: public ASTNode {
+class Operator  {
+private:
+    OperatorType type;
+
+public:
+    Operator();
+    OperatorType getType();
+};
+
+class GET: private  Operator {
 private:
     Identifier identifier;
 
@@ -80,7 +92,7 @@ public:
 
 };
 
-class SET: public ASTNode {
+class SET: public Operator {
 private:
     Identifier identifier;
     Literal literal;
@@ -95,14 +107,14 @@ public:
     void setLiteral(Token literalToken);
 };
 
-class DELETE: public ASTNode {
+class DELETE: public Operator {
 private:
     std::vector<Identifier> identifiers;
 
 public:
     DELETE();
 
-    int addIdentifier(Token identifier);
+    void setIdentifier(Token identifierToken);
 };
 
 
