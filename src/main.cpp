@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 
+#include "parser.h"
 #include "tokenizer.h"
 
 int main() {
@@ -16,17 +17,41 @@ int main() {
     for (size_t i = 0; i < testStrings.size(); i++) {
         std::string currTest = std::to_string(i);
         std::cout << "=======" << " TEST " + currTest + " " << "=======" << std::endl ;
-        std::vector<Token> tokens;
         Tokenizer tokenizer = Tokenizer(testStrings[i], 0);
+        tokenizer.tokenize();
+        std::vector<Token> tokenStream = tokenizer.getTokenStream();
 
-        for (int i = 0; i < 3; i++) {
-            tokens.push_back(tokenizer.getNextToken());
-        }
-
-        for (const auto &[type, tokenType, value]: tokens) {
+        for (const auto &[type, tokenType, value]: tokenStream) {
             std::cout << tokenType + " " + value << std::endl;
         }
+
+        Parser parser = Parser(tokenStream);
+        parser.parseTokenStream();
+
+        OperatorType type = parser.ast.getOperatorType();
+        std::string final;
+
+        switch (type) {
+            case OperatorType::GET:
+                final = "get";
+                break;
+            case OperatorType::SET:
+                final = "set";
+                break;
+            case OperatorType::DELETE:
+                final = "delete";
+                break;
+            default:
+                final = "";
+                break;
+        }
+
+        std::cout << "OPERATOR TYPE " + final << std::endl;
+
+
+
     }
+
 
 
     return 0;
