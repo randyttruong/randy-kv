@@ -83,19 +83,23 @@ public:
 class GET: private  Operator {
 private:
     Identifier identifier;
+    int identifierSetFlag;
 
 public:
     GET();
 
     Identifier getIdentifier();
     void setIdentifier(Token identifierToken);
-
+    int getIdSetFlag();
+    void setIdSetFlag();
 };
 
 class SET: public Operator {
 private:
     Identifier identifier;
     Literal literal;
+    int identifierSetFlag;
+    int literalSetFlag;
 
 public:
     SET();
@@ -105,6 +109,13 @@ public:
 
     void setIdentifier(Token identifierToken);
     void setLiteral(Token literalToken);
+    int getIdSetFlag();
+
+    void setIdSetFlag();
+
+    int getLitSetFlag();
+
+    void setLitSetFlag();
 };
 
 class DELETE: public Operator {
@@ -115,6 +126,8 @@ public:
     DELETE();
 
     void setIdentifier(Token identifierToken);
+    std::vector<Identifier> getIdentifierStream();
+    int getStreamSize();
 };
 
 

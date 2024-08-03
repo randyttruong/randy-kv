@@ -8,16 +8,13 @@ Identifier::Identifier() {
     this->type = IdentifierType::VOID;
     this->name = "";
 }
-
 void Identifier::setType(IdentifierType type) { this->type = type; }
-
 void Identifier::setName(std::string name) { this->name = name; }
 
 
 NumericalLiteral::NumericalLiteral() {
     this->value = 0;
 }
-
 void NumericalLiteral::setValue(int value) { this->value = value; }
 
 FloatingLiteral::FloatingLiteral() {
@@ -30,14 +27,11 @@ StringLiteral::StringLiteral() {
 }
 void StringLiteral::setValue(std::string value) { this->value = value; }
 
-Identifier GET::getIdentifier() { return this->identifier; }
 
-GET::GET() { this->identifier = Identifier(); }
-SET::SET() { this->identifier = Identifier(); this->literal = Literal(); }
-DELETE::DELETE() { }
-
-Operator::Operator() { this->type = OperatorType::VOID; }
-OperatorType Operator::getType() { return this->type; };
+GET::GET() {
+    this->identifier = Identifier();
+    this->identifierSetFlag = 0;
+}
 
 void GET::setIdentifier(Token identifierToken) {
     const auto &[type, tokenType, value] = identifierToken;
@@ -50,7 +44,19 @@ void GET::setIdentifier(Token identifierToken) {
     identifier.setType(IdentifierType::VARIABLE);
     identifier.setName(value);
     this->identifier = identifier;
+    setIdSetFlag();
 }
+
+int GET::getIdSetFlag() { return this->identifierSetFlag; }
+void GET::setIdSetFlag() { this->identifierSetFlag = 1 ; }
+
+SET::SET() {
+    this->identifier = Identifier();
+    this->literal = Literal();
+    this->identifierSetFlag = 0;
+    this->literalSetFlag = 0;
+}
+Literal SET::getLiteral() { return this->literal; }
 
 void SET::setIdentifier(Token identifierToken) {
     const auto &[type, tokenType, value] = identifierToken;
@@ -63,6 +69,7 @@ void SET::setIdentifier(Token identifierToken) {
     identifier.setType(IdentifierType::VARIABLE);
     identifier.setName(value);
     this->identifier = identifier;
+    this->identifierSetFlag = 1;
 }
 
 void SET::setLiteral(Token literalToken) {
@@ -77,7 +84,21 @@ void SET::setLiteral(Token literalToken) {
     StringLiteral literal = StringLiteral();
     literal.setValue(value);
     this->literal = literal;
+    setLitSetFlag();
 }
+
+
+int SET::getLitSetFlag() { return this->identifierSetFlag; }
+
+void SET::setLitSetFlag() { this->identifierSetFlag = 1; }
+
+int SET::getIdSetFlag() { return this->literalSetFlag; }
+
+void SET::setIdSetFlag() { this->literalSetFlag = 1; }
+
+Identifier SET::getIdentifier() { return this->identifier; }
+
+DELETE::DELETE() { }
 
 void DELETE::setIdentifier(Token identifierToken) {
     const auto &[type, tokenType, value] = identifierToken;
@@ -91,3 +112,12 @@ void DELETE::setIdentifier(Token identifierToken) {
     identifier.setName(value);
     this->identifiers.push_back(identifier);
 }
+
+std::vector<Identifier> DELETE::getIdentifierStream() { return this->identifiers; }
+
+int DELETE::getStreamSize() { return this->identifiers.size(); }
+
+
+Operator::Operator() { this->type = OperatorType::VOID; }
+OperatorType Operator::getType() { return this->type; };
+

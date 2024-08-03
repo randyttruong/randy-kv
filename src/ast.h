@@ -21,10 +21,11 @@ public:
     void setSetQuery(SET query);
     void setDeleteQuery(DELETE query);
 
-    GET getGetQuery();
-    SET getSetQuery();
-    DELETE getDeleteQuery();
+    GET& getGetQuery();
+    SET& getSetQuery();
+    DELETE& getDeleteQuery();
     OperatorType getOperatorType();
+    void printOperatorType() const;
 };
 
 
