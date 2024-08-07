@@ -88,11 +88,35 @@ void SET::setLiteral(Token literalToken) {
 }
 
 
-int SET::getLitSetFlag() { return this->identifierSetFlag; }
+int SET::getLitSetFlag() { return this->literalSetFlag; }
 
 void SET::setLitSetFlag() { this->identifierSetFlag = 1; }
 
-int SET::getIdSetFlag() { return this->literalSetFlag; }
+Identifier UPDATE::getIdentifier() {
+}
+
+Literal UPDATE::getLiteral() {
+}
+
+void UPDATE::setIdentifier(Token identifierToken) {
+}
+
+void UPDATE::setLiteral(Token literalToken) {
+}
+
+int UPDATE::getIdSetFlag() {
+}
+
+void UPDATE::setIdSetFlag() {
+}
+
+int UPDATE::getLitSetFlag() {
+}
+
+void UPDATE::setLitSetFlag() {
+}
+
+int SET::getIdSetFlag() { return this->identifierSetFlag; }
 
 void SET::setIdSetFlag() { this->literalSetFlag = 1; }
 
