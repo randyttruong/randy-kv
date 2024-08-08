@@ -92,33 +92,57 @@ int SET::getLitSetFlag() { return this->literalSetFlag; }
 
 void SET::setLitSetFlag() { this->identifierSetFlag = 1; }
 
-Identifier UPDATE::getIdentifier() {
+UPDATE::UPDATE() {
+    this->identifier = Identifier();
+    this->literal = Literal();
+    this->identifierSetFlag = 0;
+    this->literalSetFlag = 0;
 }
 
-Literal UPDATE::getLiteral() {
-}
+Identifier UPDATE::getIdentifier() { return this->identifier; }
+
+Literal UPDATE::getLiteral() { return this->literal; }
 
 void UPDATE::setIdentifier(Token identifierToken) {
+    const auto &[type, tokenType, value] = identifierToken;
+
+    if (type != TokenType::IDENTIFIER) {
+        exit(1);
+    }
+
+    Identifier identifier = Identifier();
+    identifier.setType(IdentifierType::VARIABLE);
+    identifier.setName(value);
+    this->identifier = identifier;
+    setLitSetFlag();
 }
 
 void UPDATE::setLiteral(Token literalToken) {
+    const auto &[type, tokenType, value] = literalToken;
+
+    if (type != TokenType::LITERAL) {
+        exit(1);
+    }
+
+    // TODO: Add support for non-alpha literals
+
+    StringLiteral literal = StringLiteral();
+    literal.setValue(value);
+    this->literal = literal;
+    setLitSetFlag();
 }
 
-int UPDATE::getIdSetFlag() {
-}
+int UPDATE::getIdSetFlag() { return this->identifierSetFlag; }
 
-void UPDATE::setIdSetFlag() {
-}
+void UPDATE::setIdSetFlag() { this->identifierSetFlag = 1; }
 
-int UPDATE::getLitSetFlag() {
-}
+int UPDATE::getLitSetFlag() { return this->literalSetFlag; }
 
-void UPDATE::setLitSetFlag() {
-}
+void UPDATE::setLitSetFlag() { this->identifierSetFlag = 1; }
 
 int SET::getIdSetFlag() { return this->identifierSetFlag; }
 
-void SET::setIdSetFlag() { this->literalSetFlag = 1; }
+void SET::setIdSetFlag() { this->identifierSetFlag = 1; }
 
 Identifier SET::getIdentifier() { return this->identifier; }
 

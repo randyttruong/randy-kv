@@ -126,6 +126,8 @@ private:
     int literalSetFlag;
 
 public:
+    UPDATE();
+
     Identifier getIdentifier();
     Literal getLiteral();
 
