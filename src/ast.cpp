@@ -20,6 +20,11 @@ void AbstractSyntaxTree::setSetQuery(SET query) {
     this->type = OperatorType::SET;
 }
 
+void AbstractSyntaxTree::setUpdateQuery(UPDATE query) {
+    this->updateQuery = query;
+    this->type = OperatorType::UPDATE;
+}
+
 void AbstractSyntaxTree::setDeleteQuery(DELETE query) {
     this->deleteQuery = query;
     this->type = OperatorType::DELETE;
@@ -28,6 +33,8 @@ void AbstractSyntaxTree::setDeleteQuery(DELETE query) {
 GET& AbstractSyntaxTree::getGetQuery() { return this->getQuery; }
 
 SET& AbstractSyntaxTree::getSetQuery() { return this->setQuery; }
+
+UPDATE& AbstractSyntaxTree::getUpdateQuery() { return this->updateQuery; }
 
 DELETE& AbstractSyntaxTree::getDeleteQuery() { return this->deleteQuery; }
 
@@ -44,6 +51,9 @@ void AbstractSyntaxTree::printOperatorType() const {
             break;
         case OperatorType::DELETE:
             final = "delete";
+            break;
+        case OperatorType::UPDATE:
+            final = "update";
             break;
         default:
             final = "";

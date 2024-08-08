@@ -32,7 +32,7 @@ Token Tokenizer::getNextToken() {
         }
 
         if (finalString == "get" || finalString == "set"
-            || finalString == "delete") {
+            || finalString == "update" || finalString == "delete") {
             finalToken.type = TokenType::KEYWORD;
             finalToken.tokenType = "keyword";
         }

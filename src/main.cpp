@@ -5,16 +5,18 @@
 #include "tokenizer.h"
 
 int main() {
-
     const std::vector<std::string> testStrings = {
         "get test1 test1",
         "set test test",
-        "set \"this\" \"test\""
+        "set \"this\" \"test\"",
+        "update swag \"here\"",
+        "update swag swag ",
+
     };
 
     for (size_t i = 0; i < testStrings.size(); i++) {
         std::string currTest = std::to_string(i);
-        std::cout << "=======" << " TEST " + currTest + " " << "=======" << std::endl ;
+        std::cout << "=======" << " TEST " + currTest + " " << "=======" << std::endl;
         std::cout << "String: " << testStrings[i] << std::endl;
         Tokenizer tokenizer = Tokenizer(testStrings[i], 0);
         tokenizer.tokenize();
