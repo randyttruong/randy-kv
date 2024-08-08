@@ -67,6 +67,7 @@ public:
 enum class OperatorType {
     GET,
     SET,
+    UPDATE,
     DELETE,
     VOID
 };
@@ -109,12 +110,34 @@ public:
 
     void setIdentifier(Token identifierToken);
     void setLiteral(Token literalToken);
-    int getIdSetFlag();
 
+    int getIdSetFlag();
     void setIdSetFlag();
 
     int getLitSetFlag();
+    void setLitSetFlag();
+};
 
+class UPDATE: public Operator {
+private:
+    Identifier identifier;
+    Literal literal;
+    int identifierSetFlag;
+    int literalSetFlag;
+
+public:
+    UPDATE();
+
+    Identifier getIdentifier();
+    Literal getLiteral();
+
+    void setIdentifier(Token identifierToken);
+    void setLiteral(Token literalToken);
+
+    int getIdSetFlag();
+    void setIdSetFlag();
+
+    int getLitSetFlag();
     void setLitSetFlag();
 };
 

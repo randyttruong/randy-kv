@@ -14,4 +14,10 @@ add_executable(randy_kv src/main.cpp
         src/ast.h
         src/node.cpp
         src/node.h
+        src/analyzer.cpp
+        src/analyzer.h
+        src/debug.cpp
+        src/debug.h
+        src/symboltable.cpp
+        src/symboltable.h
 )

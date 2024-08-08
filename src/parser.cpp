@@ -43,6 +43,9 @@ void Parser::parseTokenStream() {
         } else if (value == "set") {
           SET setQuery = SET();
           this->ast.setSetQuery(setQuery);
+        } else if (value == "update") {
+          UPDATE updateQuery = UPDATE();
+          this->ast.setUpdateQuery(updateQuery);
         } else if (value == "delete") {
           DELETE delQuery = DELETE();
           this->ast.setDeleteQuery(delQuery);
@@ -100,6 +103,37 @@ void Parser::parseTokenStream() {
               this->ast.getSetQuery().setIdentifier(currToken);
               break;
             }
+          case OperatorType::UPDATE:
+            /*
+             * TODO: Define logic for UPDATE
+             * probably should have the same as SET
+             */
+            //
+            // Check to see if IDENTIFIER has already been defined.
+            // If it is defined, then break due to double IDENTIFIERs.
+            if (this->ast.getSetQuery().getIdSetFlag() == 1) {
+              std::cout << SET_OP_FAILURE_MESSAGE
+                  << "IDENTIFIER already specified. Did you mean "
+                  << "to make \"" << currToken.value << "\" a LITERAL?"
+                  << "\nUsage: SET <KEY> <VALUE>"
+                  << std::endl;
+              debug.exit(DEBUG_MODE);
+            }
+          //
+          // If LITERAL has already been defined, then break due to
+          // invalid syntax.
+            else if (this->ast.getSetQuery().getLitSetFlag() == 1) {
+              std::cout << SET_OP_FAILURE_MESSAGE
+                  << "IDENTIFIER undefined."
+                  << "\nUsage: SET <KEY> <VALUE>"
+                  << std::endl;
+              debug.exit(DEBUG_MODE);
+            }
+            else {
+              this->ast.getSetQuery().setIdentifier(currToken);
+              break;
+            }
+
           case OperatorType::DELETE:
             this->ast.getDeleteQuery().setIdentifier(currToken);
             break;
@@ -137,6 +171,11 @@ void Parser::parseTokenStream() {
       // not been specified yet, then break.
         if (!this->ast.getSetQuery().getIdSetFlag()) {
           std::cout << SET_OP_FAILURE_MESSAGE
+              << "Unspecified identifier, given literal instead."
+              << std::endl;
+          debug.exit(DEBUG_MODE);
+        } else if (!this->ast.getUpdateQuery().getIdSetFlag()) {
+          std::cout <<  UPDATE_OP_FAILIURE_MESSAGE
               << "Unspecified identifier, given literal instead."
               << std::endl;
           debug.exit(DEBUG_MODE);
