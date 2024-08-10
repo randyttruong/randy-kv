@@ -1,5 +1,5 @@
-# randy-kv 
-Micro distributed key-value storage in C++  
+# Randy-KV
+A lightweight distributed key-value storage in C++. 
 
 ## todos 
 ### frontend todos 
