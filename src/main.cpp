@@ -1,24 +1,36 @@
 #include <iostream>
 #include <vector>
 
+#include "fileparser.h"
 #include "parser.h"
 #include "tokenizer.h"
+#include "debug.h"
 
-int main() {
-    const std::vector<std::string> testStrings = {
-        "get test1 test1",
-        "set test test",
-        "set \"this\" \"test\"",
-        "update swag \"here\"",
-        "update swag swag ",
+int main(int argc, char *argv[]) {
+    std::string filename;
 
-    };
+    if (argc != 2) {
+        std::cerr
+             << "[ERROR] No filename provided. Exiting."
+             << std::endl;
+        if (DEBUG_MODE == 0) std::exit(1);
+    }
 
-    for (size_t i = 0; i < testStrings.size(); i++) {
+    filename = argv[1];
+
+    if (DEBUG_MODE != 0) {
+        std::cout << "[DEBUG] Opening file " << filename << std::endl;
+    }
+
+    FileParser fp = FileParser();
+    fp.setInput(filename);
+    fp.parseFile();
+
+    for (size_t i = 0; i < fp.getInputStream().size(); i++) {
         std::string currTest = std::to_string(i);
         std::cout << "=======" << " TEST " + currTest + " " << "=======" << std::endl;
-        std::cout << "String: " << testStrings[i] << std::endl;
-        Tokenizer tokenizer = Tokenizer(testStrings[i], 0);
+        std::cout << "String: " << fp.getInputStream()[i] << std::endl;
+        Tokenizer tokenizer = Tokenizer(fp.getInputStream()[i], 0);
         tokenizer.tokenize();
         std::vector<Token> tokenStream = tokenizer.getTokenStream();
 
