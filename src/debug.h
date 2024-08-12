@@ -5,7 +5,7 @@
 #ifndef DEBUG_H
 #define DEBUG_H
 
-
+inline extern bool DEBUG_MODE = false;
 
 class debug {
 public:
