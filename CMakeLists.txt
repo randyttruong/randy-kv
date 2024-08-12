@@ -20,4 +20,6 @@ add_executable(randy_kv src/main.cpp
         src/debug.h
         src/symboltable.cpp
         src/symboltable.h
+        src/fileparser.cpp
+        src/fileparser.h
 )

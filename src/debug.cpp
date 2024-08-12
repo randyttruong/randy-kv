@@ -4,6 +4,7 @@
 
 #include "debug.h"
 
+
 debug::debug() {}
 
 void debug::exit(int DEBUG_MODE) {

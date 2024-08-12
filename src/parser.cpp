@@ -169,13 +169,15 @@ void Parser::parseTokenStream() {
 
       // Check for correct ordering-- if an identifier has
       // not been specified yet, then break.
-        if (!this->ast.getSetQuery().getIdSetFlag()) {
+        if (this->ast.getOperatorType() == OperatorType::SET
+            && !this->ast.getSetQuery().getIdSetFlag()) {
           std::cout << SET_OP_FAILURE_MESSAGE
               << "Unspecified identifier, given literal instead."
               << std::endl;
           debug.exit(DEBUG_MODE);
-        } else if (!this->ast.getUpdateQuery().getIdSetFlag()) {
-          std::cout <<  UPDATE_OP_FAILIURE_MESSAGE
+        } else if (this->ast.getOperatorType() == OperatorType::UPDATE
+                   && !this->ast.getUpdateQuery().getIdSetFlag()) {
+          std::cout << UPDATE_OP_FAILIURE_MESSAGE
               << "Unspecified identifier, given literal instead."
               << std::endl;
           debug.exit(DEBUG_MODE);
