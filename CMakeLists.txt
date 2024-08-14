@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.28)
 project(randy_kv)
 
 set(CMAKE_CXX_STANDARD 17)
+message(STATUS "Project Source Directory: ${PROJECT_SOURCE_DIR}")
+
 
 add_executable(randy_kv src/main.cpp
         src/tokenizer.cpp
@@ -22,4 +24,10 @@ add_executable(randy_kv src/main.cpp
         src/symboltable.h
         src/fileparser.cpp
         src/fileparser.h
+        hashmap.cpp
+        hashmap.h
 )
+
+target_include_directories(randy_kv PRIVATE ${PROJECT_SOURCE_DIR}/include)
+target_link_libraries(randy_kv PRIVATE ${PROJECT_SOURCE_DIR}/lib/libalgo_suite.a)
+
