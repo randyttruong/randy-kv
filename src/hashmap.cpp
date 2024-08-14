@@ -2,7 +2,7 @@
 // Created by Randy Truong on 8/12/24.
 
 #include "hashmap.h"
-#include "fnv1.h"
+#include "../include/fnv1.h"
 
 
 HashMap::HashMap() {}

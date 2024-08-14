@@ -24,8 +24,8 @@ add_executable(randy_kv src/main.cpp
         src/symboltable.h
         src/fileparser.cpp
         src/fileparser.h
-        hashmap.cpp
-        hashmap.h
+        src/hashmap.cpp
+        src/hashmap.h
 )
 
 target_include_directories(randy_kv PRIVATE ${PROJECT_SOURCE_DIR}/include)
