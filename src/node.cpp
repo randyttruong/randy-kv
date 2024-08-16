@@ -158,12 +158,15 @@ void DELETE::setIdentifier(Token identifierToken) {
     Identifier identifier = Identifier();
     identifier.setType(IdentifierType::VARIABLE);
     identifier.setName(value);
-    this->identifiers.push_back(identifier);
+    this->identifier = identifier;
+    this->setIdFlag();
 }
 
-std::vector<Identifier> DELETE::getIdentifierStream() { return this->identifiers; }
+Identifier DELETE::getIdentifier() { return this->identifier; }
 
-int DELETE::getStreamSize() { return this->identifiers.size(); }
+void DELETE::setIdFlag() { this->identifierSetFlag = 1; }
+
+int DELETE::getIdFlag() { return this->identifierSetFlag; }
 
 
 Operator::Operator() { this->type = OperatorType::VOID; }

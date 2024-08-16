@@ -143,14 +143,17 @@ public:
 
 class DELETE: public Operator {
 private:
-    std::vector<Identifier> identifiers;
+    Identifier identifier;
+    int identifierSetFlag;
 
 public:
     DELETE();
 
     void setIdentifier(Token identifierToken);
-    std::vector<Identifier> getIdentifierStream();
-    int getStreamSize();
+    Identifier getIdentifier();
+
+    void setIdFlag();
+    int getIdFlag();
 };
 
 
