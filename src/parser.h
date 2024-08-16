@@ -12,11 +12,13 @@
 class Parser {
 private:
     std::vector<Token> TokenStream;
+    Tokenizer tokenizer;
+    std::vector<AbstractSyntaxTree> queries;
 
 public:
     AbstractSyntaxTree ast;
 
-    Parser(std::vector<Token> TokenStream);
+    Parser(const Tokenizer &tokenizer);
     void parseTokenStream();
 };
 

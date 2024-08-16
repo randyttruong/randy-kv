@@ -19,12 +19,19 @@
 
 debug debug;
 
-Parser::Parser(std::vector<Token> TokenStream): TokenStream(TokenStream), ast() {
+Parser::Parser(const Tokenizer &tokenizer): tokenizer(tokenizer), ast() {
   this->ast = AbstractSyntaxTree();
 }
 
+/*
+ * TODO: Find a way to divide multiple queries in the parser.
+ * Solution:
+ * - Utilize the END token to divide queries
+ */
 void Parser::parseTokenStream() {
-  for (Token currToken: TokenStream) {
+  std::vector<Token> TokenStream = tokenizer.getTokenStream();
+
+  for (const Token& currToken: TokenStream) {
     const auto &[type, tokenType, value] = currToken;
 
     switch (type) {
@@ -37,6 +44,9 @@ void Parser::parseTokenStream() {
               << std::endl;
         }
 
+        /*
+         * TODO: Please stop using string comparison, since it's slow.
+         */
         if (value == "get") {
           GET getQuery = GET();
           this->ast.setGetQuery(getQuery);
@@ -185,6 +195,83 @@ void Parser::parseTokenStream() {
           this->ast.getSetQuery().setLiteral(currToken);
           break;
         }
+
+      case TokenType::END:
+        /*
+         * If this is the end, then check if the current
+         * existing query is valid or not. If not valid, then
+         * throw an error.
+         */
+          OperatorType astOp = this->ast.getOperatorType();
+
+      //
+      // Analyze current AST for semantic correctness
+        switch (astOp) {
+          case OperatorType::GET:
+            /*
+             * GET form: GET <IDENTIFIER>
+             */
+
+            GET getQuery;
+            getQuery = this->ast.getGetQuery();
+
+            if (!getQuery.getIdSetFlag()) {
+              std::cerr << GET_OP_FAILURE_MESSAGE << "GET query terminated without an identifier." << std::endl;
+              std::exit(1);
+            }
+            break;
+
+          case OperatorType::SET:
+            /*
+             * SET form: SET <IDENTIFIER> <LITERAL>
+             */
+
+            SET setQuery;
+            setQuery = this->ast.getSetQuery();
+
+            if (!setQuery.getIdSetFlag() || !setQuery.getLitSetFlag()) {
+              std::cerr << SET_OP_FAILURE_MESSAGE << "SET query terminated without either an identifier or a "
+                                                     "literal." << std::endl;
+              std::exit(1);
+            }
+
+          case OperatorType::UPDATE:
+            /*
+             * UPDATE form: UPDATE <IDENTIFIER> <LITERAL>
+             */
+
+            UPDATE updateQuery;
+            updateQuery = this->ast.getUpdateQuery();
+
+            if (!updateQuery.getIdSetFlag() || !updateQuery.getLitSetFlag()) {
+              std::cerr << UPDATE_OP_FAILIURE_MESSAGE << "UPDATE query terminated without either an identifier or a "
+                                                     "literal." << std::endl;
+              std::exit(1);
+            }
+
+          case OperatorType::DELETE:
+            /*
+             * DELETE form: DELETE <IDENTIFIER>
+             */
+
+              DELETE deleteQuery;
+              deleteQuery = this->ast.getDeleteQuery();
+
+            if (!deleteQuery.getIdFlag()) {
+              std::cerr << DEL_OP_FAILURE_MESSAGE << "DELETE query terminated without an identifier." << std::endl;
+              std::exit(1);
+            }
+
+          case OperatorType::VOID:
+            std::cout << UNEXPECTED_FAILURE_MESSAGE << "Query terminated with no operator." << std::endl;
+            std::exit(1);
+
+          /*
+           * TODO: Add base case-- push AST to AbstractSyntaxTree vector.
+           */
+
+        }
+
       default:
         break;
     }
