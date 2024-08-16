@@ -7,9 +7,11 @@
 #include <iostream>
 #include <vector>
 
-Tokenizer::Tokenizer(std::string input, size_t pos): input(std::move(input)), pos(pos) {}
+Tokenizer::Tokenizer(FileParser fileParser): fileParser(fileParser) {
+    this->pos = 0;
+}
 
-Token Tokenizer::getNextToken() {
+Token Tokenizer::getNextToken(std::string input) {
     Token finalToken;
     std::string finalString;
 
@@ -76,12 +78,22 @@ Token Tokenizer::getNextToken() {
     return finalToken;
 }
 
-void Tokenizer::tokenize() {
+void Tokenizer::tokenizeInput() {
+    std::vector<std::string> input = this->fileParser.getInputStream();
+
+    for (size_t i = 0; i < input.size(); i++) {
+        this->pos = 0;
+        tokenize(input[i]);
+    }
+
+}
+
+void Tokenizer::tokenize(std::string input) {
 
     while (true) {
-        Token currentToken = getNextToken();
-        if (currentToken.type == TokenType::END) return;
+        Token currentToken = getNextToken(input);
         pushToTokenStream(currentToken);
+        if (currentToken.type == TokenType::END) return;
     };
 
 }

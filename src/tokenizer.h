@@ -7,6 +7,8 @@
 #include <string>
 #include <vector>
 
+#include "fileparser.h"
+
 enum class TokenType {
     KEYWORD,
     IDENTIFIER,
@@ -23,14 +25,17 @@ struct Token {
 
 class Tokenizer {
 private:
-    std::string input;
-    size_t pos;
+    FileParser fileParser;
     std::vector<Token> TokenStream;
+    uint64_t pos;
 
 public:
-    Tokenizer(std::string input, size_t pos);
-    void tokenize();
-    Token getNextToken();
+    Tokenizer(FileParser fileParser);
+    void tokenize(std::string input);
+    Token getNextToken(std::string input);
+
+    void tokenizeInput();
+
     std::vector<Token> getTokenStream();
     void pushToTokenStream(Token input);
 };
