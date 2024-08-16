@@ -5,6 +5,7 @@
 #include "parser.h"
 #include "tokenizer.h"
 #include "debug.h"
+#include "hashmap.h"
 
 int main(int argc, char *argv[]) {
     std::string filename;
@@ -42,5 +43,25 @@ int main(int argc, char *argv[]) {
         parser.parseTokenStream();
         parser.ast.printOperatorType();
     }
+
+    std::cout << "========================"
+            << "========================"
+            << "========================"
+            << std::endl;
+
+    std::cout << "[DEBUG] Testing out hashing " << std::endl;
+
+    std::cout << "========================"
+            << "========================"
+            << "========================"
+            << std::endl;
+
+    HashMap *hm = new HashMap();
+
+    hm->testHashing("swag");
+    hm->testHashing("swag");
+    hm->testHashing("1234");
+    hm->testHashing("test");
+
     return 0;
 }

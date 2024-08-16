@@ -14,13 +14,14 @@
 
 class HashMap {
 private:
-  std::vector<std::string> map;
+  std::vector<std::vector<std::pair<std::string, std::string>>> map;
 
 public:
   HashMap();
 
   int getSize();
 
+  int testHashing(std::string input);
   std::string getValue();
   int addKey(std::string input, std::string value);
   int updateKey(std::string input, std::string value);
