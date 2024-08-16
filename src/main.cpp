@@ -27,22 +27,27 @@ int main(int argc, char *argv[]) {
     fp.setInput(filename);
     fp.parseFile();
 
-    for (size_t i = 0; i < fp.getInputStream().size(); i++) {
-        std::string currTest = std::to_string(i);
-        std::cout << "=======" << " TEST " + currTest + " " << "=======" << std::endl;
-        std::cout << "String: " << fp.getInputStream()[i] << std::endl;
-        Tokenizer tokenizer = Tokenizer(fp.getInputStream()[i], 0);
-        tokenizer.tokenize();
-        std::vector<Token> tokenStream = tokenizer.getTokenStream();
+    Tokenizer tkzr = Tokenizer(fp);
 
-        for (const auto &[type, tokenType, value]: tokenStream) {
-            std::cout << tokenType + " " + value << std::endl;
-        }
+    tkzr.tokenizeInput();
 
-        Parser parser = Parser(tokenStream);
-        parser.parseTokenStream();
-        parser.ast.printOperatorType();
+   std::vector<Token> tokenStream = tkzr.getTokenStream();
+
+    for (const auto &[type, tokenType, value]: tokenStream) {
+      std::cout << "========================"
+          << "========================"
+          << "========================"
+          << std::endl;
+      std::cout << tokenType + " " + value << std::endl;
+      std::cout << "========================"
+          << "========================"
+          << "========================"
+          << std::endl;
     }
+
+    Parser parser = Parser(tkzr);
+    parser.parseTokenStream();
+    parser.ast.printOperatorType();
 
     std::cout << "========================"
             << "========================"
