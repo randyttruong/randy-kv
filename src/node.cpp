@@ -11,6 +11,9 @@ Identifier::Identifier() {
 void Identifier::setType(IdentifierType type) { this->type = type; }
 void Identifier::setName(std::string name) { this->name = name; }
 
+IdentifierType Identifier::getType() { return this->type; }
+std::string Identifier::getName() { return this->name; }
+
 
 NumericalLiteral::NumericalLiteral() {
     this->value = 0;
@@ -32,6 +35,8 @@ GET::GET() {
     this->identifier = Identifier();
     this->identifierSetFlag = 0;
 }
+
+Identifier GET::getIdentifier() { return this->identifier; }
 
 void GET::setIdentifier(Token identifierToken) {
     const auto &[type, tokenType, value] = identifierToken;

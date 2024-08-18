@@ -22,10 +22,12 @@ public:
   int getSize();
 
   int testHashing(std::string input);
-  std::string getValue();
+  std::string getValue(std::string input);
   int addKey(std::string input, std::string value);
   int updateKey(std::string input, std::string value);
   int deleteKey(std::string input);
+  bool keyExists(std::string input);
+
 };
 
 

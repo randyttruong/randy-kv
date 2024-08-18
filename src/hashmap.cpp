@@ -5,6 +5,7 @@
 
 #include "debug.h"
 #include "../include/fnv1.h"
+#define SIZE_CONSTANT 32
 
 HashMap::HashMap() {
   this->map.resize(1000);
@@ -13,7 +14,7 @@ HashMap::HashMap() {
 int HashMap::getSize() { return this->map.size(); }
 
 int HashMap::testHashing(std::string input) {
-  uint64_t h = hash(input, 32);
+  uint64_t h = hash(input, SIZE_CONSTANT);
 
   std::cout << "========================"
             << "========================"
@@ -41,8 +42,29 @@ int HashMap::testHashing(std::string input) {
 
 }
 
-std::string HashMap::getValue() {
-  return "";
+std::string HashMap::getValue(std::string input) {
+  uint64_t h = hash(input, SIZE_CONSTANT) % this->getSize();
+  std::vector<std::pair<std::string, std::string>> bucket = this->map[h];
+  size_t n = bucket.size();
+
+  if (!n) {
+    std::cout << "[ERROR] Unable to find key '" << input << "' aborting." << std::endl;
+
+    if (DEBUG_MODE) std::exit(1);
+  }
+
+  for (size_t i = 0; i < n; i++) {
+
+    if (bucket[i].first == input) {
+      if (DEBUG_MODE) std::cout << "[DEBUG] Key '" << input << "' found. Returning value." << std::endl;
+      return bucket[i].second;
+    }
+
+  }
+
+  if (DEBUG_MODE) std::cout << "[DEBUG] Unable to find key '" << input << "'. Returning false." << std::endl;
+
+  return "-1";
 }
 
 int HashMap::addKey(std::string input, std::string value) {
@@ -50,7 +72,7 @@ int HashMap::addKey(std::string input, std::string value) {
     std::cout << "[DEBUG] Attempting to add <" << input << ", " << value << ">" << std::endl;
   }
 
-  uint64_t h = hash(input, 32) % this->getSize();
+  uint64_t h = hash(input, SIZE_CONSTANT) % this->getSize();
   std::vector<std::pair<std::string, std::string>> currBucket  = this->map[h];
 
   for (int i = 0; i < currBucket.size(); i++) {
@@ -63,7 +85,7 @@ int HashMap::addKey(std::string input, std::string value) {
   this->map[h].push_back(std::make_pair(input, value));
 
   if (DEBUG_MODE) {
-    std::cout << "[DEBUG] Successfully added <" << input << ", " << value << ">" << std::endl;
+    std::cout << "[HM_DEBUG] Successfully added <" << input << ", " << value << ">" << std::endl;
   }
 
   return 0;
@@ -74,7 +96,7 @@ int HashMap::updateKey(std::string input, std::string value) {
     std::cout << "[DEBUG] Attempting to update key \"" << input << "\" to the value \"" << value << "\" " << std::endl;
   }
 
-  uint64_t h = hash(input, 32) % this->getSize();
+  uint64_t h = hash(input, SIZE_CONSTANT) % this->getSize();
   std::vector<std::pair<std::string, std::string>> currBucket = this->map[h];
 
   for (int i = 0; i < currBucket.size(); i++) {
@@ -99,7 +121,7 @@ int HashMap::deleteKey(std::string input) {
     std::cout << "[DEBUG] Attempting to delete key \"" << input << "\"" << std::endl;
   }
 
-  uint64_t h = hash(input, 32) % this->getSize();
+  uint64_t h = hash(input, SIZE_CONSTANT) % this->getSize();
   std::vector<std::pair<std::string, std::string>> currBucket = this->map[h];
 
   for (int i = 0; i < currBucket.size(); i++) {
@@ -118,4 +140,23 @@ int HashMap::deleteKey(std::string input) {
   }
 
   return 1;
+}
+
+bool HashMap::keyExists(std::string input) {
+  uint64_t h = hash(input, SIZE_CONSTANT) % this->getSize();
+  std::vector<std::pair<std::string, std::string>> bucket = this->map[h];
+  size_t n = bucket.size();
+
+  for (size_t i = 0; i < n; i++) {
+
+    if (bucket[i].first == input) {
+      if (DEBUG_MODE) std::cout << "[DEBUG] Key '" << input << "' found. Returning true." << std::endl;
+      return true;
+    }
+
+  }
+
+  if (DEBUG_MODE) std::cout << "[DEBUG] Unable to find key '" << input << "'. Returning false." << std::endl;
+
+  return false;
 }

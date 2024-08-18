@@ -32,6 +32,7 @@ public:
 
     Parser(const Tokenizer &tokenizer);
     void parseTokenStream();
+    std::vector<AbstractSyntaxTree> getQueries();
 };
 
 

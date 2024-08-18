@@ -42,6 +42,9 @@ public:
     Identifier();
     void setType(IdentifierType type);
     void setName(std::string name);
+
+    IdentifierType getType();
+    std::string getName();
 };
 
 enum class LiteralType {

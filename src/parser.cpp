@@ -263,3 +263,5 @@ void Parser::parseTokenStream() {
     }
   }
 }
+
+std::vector<AbstractSyntaxTree> Parser::getQueries() { return this->queries; }
