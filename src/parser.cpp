@@ -23,11 +23,6 @@ Parser::Parser(const Tokenizer &tokenizer): tokenizer(tokenizer), ast() {
   this->ast = *std::make_unique<AbstractSyntaxTree>();
 }
 
-/*
- * TODO: Find a way to divide multiple queries in the parser.
- * Solution:
- * - Utilize the END token to divide queries
- */
 void Parser::parseTokenStream() {
   std::vector<Token> TokenStream = tokenizer.getTokenStream();
 
