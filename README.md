@@ -2,16 +2,13 @@
 Lightweight distributed key-value storage in C++ that utilizes probabilistic hashing. 
 
 ## todos 
-### frontend todos 
-- [X] basic lexer 
-- [X] basic parser 
-- [ ] basic semantic analyzer 
-- [ ] basic logical analyzer 
-- [ ] basic executor 
+### Frontend 
+- [X] Lexer v1 
+- [X] Parser/Syntax Analyzer v1 
+- [X] Executor/Semantic Analyzer v1 
 
-### backend todos  
-- [ ] kv store data types 
-- [ ] hashing   
-
-### quality of life features 
-- statement separators 
+### Backend 
+- [X] String-to-int hashing using FNV-1 algorithm 
+- [X] Hash Table Implementation for CRUD operations
+- [ ] Int-to-int hashing using algebraic hashing
+- [ ] Distributed storage? 
