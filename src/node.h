@@ -1,5 +1,18 @@
 //
-// Created by Randy Truong on 8/1/24.
+// node.h
+//
+// Implementation of the various nodes for an abstract syntax tree.
+//
+// Fields:
+// - TODO
+//
+// Getter/Setter Methods:
+// - TODO
+//
+// Functional Methods:
+// - TODO
+//
+// Created by Randy Truong on 7/31/24.
 //
 
 #ifndef NODE_H

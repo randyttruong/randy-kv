@@ -1,4 +1,16 @@
 //
+// parser.h
+//
+// Implementation of a TokenStream parser and syntactic analyzer
+// in C++.
+//
+// Fields:
+// - TODO
+// Getter/Setter Methods:
+// - TODO
+// Functional Methods:
+// - TODO
+//
 // Created by Randy Truong on 7/31/24.
 //
 

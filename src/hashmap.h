@@ -1,10 +1,10 @@
-/*
- * hashmap.h
- *
- * A probabilistic hashmap implementation in C++.
- *
- * Created by Randy Truong on 8/12/24.
- */
+//
+// hashmap.h
+//
+// A hashmap implementation in C++ using probabilistic hashing.
+//
+// Created by Randy Truong on 8/12/24.
+//
 
 #ifndef HASHMAP_H
 #define HASHMAP_H
