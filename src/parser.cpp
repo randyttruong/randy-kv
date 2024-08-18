@@ -20,7 +20,7 @@
 debug debug;
 
 Parser::Parser(const Tokenizer &tokenizer): tokenizer(tokenizer), ast() {
-  this->ast = AbstractSyntaxTree();
+  this->ast = *std::make_unique<AbstractSyntaxTree>();
 }
 
 /*
@@ -202,75 +202,66 @@ void Parser::parseTokenStream() {
          * existing query is valid or not. If not valid, then
          * throw an error.
          */
-          OperatorType astOp = this->ast.getOperatorType();
+          OperatorType astOp;
+          astOp = this->ast.getOperatorType();
 
       //
       // Analyze current AST for semantic correctness
-        switch (astOp) {
-          case OperatorType::GET:
-            /*
-             * GET form: GET <IDENTIFIER>
-             */
+          switch (astOp) {
+            case OperatorType::GET:
+              /*
+               * GET form: GET <IDENTIFIER>
+               */
 
-            GET getQuery;
-            getQuery = this->ast.getGetQuery();
+              if (!this->ast.getGetQuery().getIdSetFlag()) {
+                std::cerr << GET_OP_FAILURE_MESSAGE << "GET query terminated without an identifier." << std::endl;
+                if (DEBUG_MODE) std::exit(1);
+              }
+              break;
 
-            if (!getQuery.getIdSetFlag()) {
-              std::cerr << GET_OP_FAILURE_MESSAGE << "GET query terminated without an identifier." << std::endl;
-              std::exit(1);
-            }
-            break;
+            case OperatorType::SET:
+              /*
+               * SET form: SET <IDENTIFIER> <LITERAL>
+               */
 
-          case OperatorType::SET:
-            /*
-             * SET form: SET <IDENTIFIER> <LITERAL>
-             */
+              if (!this->ast.getSetQuery().getIdSetFlag() || !this->ast.getSetQuery().getLitSetFlag()) {
+                std::cerr << SET_OP_FAILURE_MESSAGE << "SET query terminated without either an identifier or a "
+                                                       "literal." << std::endl;
+                if (DEBUG_MODE) std::exit(1);
+              }
+              break;
 
-            SET setQuery;
-            setQuery = this->ast.getSetQuery();
+            case OperatorType::UPDATE:
+              /*
+               * UPDATE form: UPDATE <IDENTIFIER> <LITERAL>
+               */
 
-            if (!setQuery.getIdSetFlag() || !setQuery.getLitSetFlag()) {
-              std::cerr << SET_OP_FAILURE_MESSAGE << "SET query terminated without either an identifier or a "
-                                                     "literal." << std::endl;
-              std::exit(1);
-            }
+              if (!this->ast.getUpdateQuery().getIdSetFlag() || !this->ast.getUpdateQuery().getLitSetFlag()) {
+                std::cerr << UPDATE_OP_FAILIURE_MESSAGE << "UPDATE query terminated without either an identifier or a "
+                                                       "literal." << std::endl;
+                if (DEBUG_MODE) std::exit(1);
+              }
+              break;
 
-          case OperatorType::UPDATE:
-            /*
-             * UPDATE form: UPDATE <IDENTIFIER> <LITERAL>
-             */
+            case OperatorType::DELETE:
+              /*
+               * DELETE form: DELETE <IDENTIFIER>
+               */
 
-            UPDATE updateQuery;
-            updateQuery = this->ast.getUpdateQuery();
+              if (!this->ast.getDeleteQuery().getIdFlag()) {
+                std::cerr << DEL_OP_FAILURE_MESSAGE << "DELETE query terminated without an identifier." << std::endl;
+                if (DEBUG_MODE) std::exit(1);
+              }
+              break;
 
-            if (!updateQuery.getIdSetFlag() || !updateQuery.getLitSetFlag()) {
-              std::cerr << UPDATE_OP_FAILIURE_MESSAGE << "UPDATE query terminated without either an identifier or a "
-                                                     "literal." << std::endl;
-              std::exit(1);
-            }
+            case OperatorType::VOID:
+              std::cout << UNEXPECTED_FAILURE_MESSAGE << "Query terminated with no operator." << std::endl;
+              if (DEBUG_MODE) std::exit(1);
+              break;
 
-          case OperatorType::DELETE:
-            /*
-             * DELETE form: DELETE <IDENTIFIER>
-             */
-
-              DELETE deleteQuery;
-              deleteQuery = this->ast.getDeleteQuery();
-
-            if (!deleteQuery.getIdFlag()) {
-              std::cerr << DEL_OP_FAILURE_MESSAGE << "DELETE query terminated without an identifier." << std::endl;
-              std::exit(1);
-            }
-
-          case OperatorType::VOID:
-            std::cout << UNEXPECTED_FAILURE_MESSAGE << "Query terminated with no operator." << std::endl;
-            std::exit(1);
-
-          /*
-           * TODO: Add base case-- push AST to AbstractSyntaxTree vector.
-           */
-
-        }
+          }
+          queries.push_back(this->ast);
+          this->ast = *std::make_unique<AbstractSyntaxTree>();
 
       default:
         break;
