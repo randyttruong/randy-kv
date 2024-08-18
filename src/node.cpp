@@ -90,7 +90,7 @@ void SET::setLiteral(Token literalToken) {
 
 int SET::getLitSetFlag() { return this->literalSetFlag; }
 
-void SET::setLitSetFlag() { this->identifierSetFlag = 1; }
+void SET::setLitSetFlag() { this->literalSetFlag = 1; }
 
 UPDATE::UPDATE() {
     this->identifier = Identifier();
