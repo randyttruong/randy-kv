@@ -88,6 +88,7 @@ enum class OperatorType {
     VOID
 };
 
+
 class Operator  {
 private:
     OperatorType type;
@@ -97,7 +98,7 @@ public:
     OperatorType getType();
 };
 
-class GET: private  Operator {
+class GET: public Operator {
 private:
     Identifier identifier;
     int identifierSetFlag;
@@ -172,6 +173,11 @@ public:
     int getIdFlag();
 };
 
+class OperatorFactory {
+private:
+public:
+    static std::unique_ptr<Operator> makeOperator(std::string operatorType);
+};
 
 
 #endif //NODE_H

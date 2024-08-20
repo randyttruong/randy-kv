@@ -31,6 +31,7 @@ StringLiteral::StringLiteral() {
 void StringLiteral::setValue(std::string value) { this->value = value; }
 
 
+
 GET::GET() {
     this->identifier = Identifier();
     this->identifierSetFlag = 0;
@@ -177,3 +178,15 @@ int DELETE::getIdFlag() { return this->identifierSetFlag; }
 Operator::Operator() { this->type = OperatorType::VOID; }
 OperatorType Operator::getType() { return this->type; };
 
+std::unique_ptr<Operator> OperatorFactory::makeOperator(std::string operatorType) {
+
+    if (operatorType == "get") {
+        return std::make_unique<GET>();
+    } else if (operatorType == "set") {
+        return std::make_unique<SET>();
+    } else if (operatorType == "update") {
+        return std::make_unique<UPDATE>();
+    } else if (operatorType == "delete") {
+        return std::make_unique<DELETE>();
+    }
+}
