@@ -42,19 +42,24 @@ void Parser::parseTokenStream() {
         /*
          * TODO: Please stop using string comparison, since it's slow.
          */
-        if (value == "get") {
-          GET getQuery = GET();
-          this->ast.setGetQuery(getQuery);
-        } else if (value == "set") {
-          SET setQuery = SET();
-          this->ast.setSetQuery(setQuery);
-        } else if (value == "update") {
-          UPDATE updateQuery = UPDATE();
-          this->ast.setUpdateQuery(updateQuery);
-        } else if (value == "delete") {
-          DELETE delQuery = DELETE();
-          this->ast.setDeleteQuery(delQuery);
-        }
+        std::unique_ptr<Operator> query = OperatorFactory::makeOperator(value);
+
+        this->ast.setQuery(*query);
+
+        //
+        // if (value == "get") {
+        //   GET getQuery = GET();
+        //   this->ast.setGetQuery(getQuery);
+        // } else if (value == "set") {
+        //   SET setQuery = SET();
+        //   this->ast.setSetQuery(setQuery);
+        // } else if (value == "update") {
+        //   UPDATE updateQuery = UPDATE();
+        //   this->ast.setUpdateQuery(updateQuery);
+        // } else if (value == "delete") {
+        //   DELETE delQuery = DELETE();
+        //   this->ast.setDeleteQuery(delQuery);
+        // }
         break;
 
       case TokenType::IDENTIFIER:
@@ -71,7 +76,7 @@ void Parser::parseTokenStream() {
             // Check to see if an IDENTIFIER has already been
             // defined. If it is defined, then break due to
             // invalid syntax.
-            if (this->ast.getGetQuery().getIdSetFlag() == 1) {
+            if (this->ast.getQuery().getIdSetFlag() == 1) {
               std::cout << GET_OP_FAILURE_MESSAGE
                   << "IDENTIFIER already specified."
                   << "\nUsage: GET <KEY>"
