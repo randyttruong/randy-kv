@@ -1,5 +1,5 @@
 # Randy-KV
-Lightweight distributed key-value storage in C++ that utilizes probabilistic hashing. 
+Distributed key-value database in C++ that utilizes randomized hashing for effective load balancing. 
 
 ## todos 
 ### Frontend 
