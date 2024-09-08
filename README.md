@@ -1,5 +1,5 @@
 # Randy-KV
-Distributed key-value database in C++ that utilizes randomized hashing for effective load balancing. 
+Distributed, in-memory key-value database in C++ that utilizes randomized hashing for effective load balancing. 
 
 ## todos 
 ### Frontend 
