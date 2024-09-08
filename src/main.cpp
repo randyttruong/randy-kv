@@ -2,61 +2,22 @@
 #include <vector>
 
 #include "analyzer.h"
+#include "cli.h"
 #include "fileparser.h"
 #include "parser.h"
 #include "tokenizer.h"
 #include "debug.h"
 #include "executor.h"
 #include "hashmap.h"
+#include <boost/program_options.hpp>
+
+namespace po = boost::program_options;
 
 int main(int argc, char *argv[]) {
-    std::string filename;
+    CLI *cli = new CLI();
 
-    if (argc != 2) {
-        std::cerr
-             << "[ERROR] No filename provided. Exiting."
-             << std::endl;
-        if (DEBUG_MODE == 0) std::exit(1);
-    }
+    cli->parseCommand(argc, argv);
 
-    filename = argv[1];
-
-    if (DEBUG_MODE != 0) {
-        std::cout << "[DEBUG] Opening file " << filename << std::endl;
-    }
-
-    FileParser fp = FileParser();
-    fp.setInput(filename);
-    fp.parseFile();
-
-    Tokenizer tkzr = Tokenizer(fp);
-
-    tkzr.tokenizeInput();
-
-   std::vector<Token> tokenStream = tkzr.getTokenStream();
-
-    for (const auto &[type, tokenType, value]: tokenStream) {
-      std::cout << "========================"
-          << "========================"
-          << "========================"
-          << std::endl;
-      std::cout << tokenType + " " + value << std::endl;
-      std::cout << "========================"
-          << "========================"
-          << "========================"
-          << std::endl;
-    }
-
-    Parser parser = Parser(tkzr);
-    parser.parseTokenStream();
-    parser.ast.printOperatorType();
-
-    Analyzer analyzer = Analyzer(parser);
-
-    HashMap *hm = new HashMap();
-    Executor exec = Executor(parser, *hm);
-
-    exec.executeQueries();
 
     // std::cout << "========================"
     //         << "========================"

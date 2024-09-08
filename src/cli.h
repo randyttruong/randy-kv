@@ -4,30 +4,36 @@
 
 #ifndef CLI_H
 #define CLI_H
+#include <memory>
+#include <string>
 
-class Command {
+#include "clicommands.h"
+#include "fileparser.h"
+#include <boost/program_options.hpp>
+
+// enum class CliCommandType {
+//   START,
+//   INIT,
+// };
+
+class CliCommandFactory {
 private:
 public:
+  CliCommandFactory();
+  std::unique_ptr<CliCommand> makeCommand();
 };
 
-class GetCommand: public Command {
+class CLI {
 private:
+  bool newFileFlag;
+
 public:
+  CLI();
+  bool parseCommand(int argc, char* argv[]); // Argument Parser for the CLI
+  bool Command(); // Argument Parser for the CLI
+  bool loop(); // the main loop of the CLI
+
 };
 
-class SetCommand: public Command {
-private:
-public:
-};
-
-class UpdateCommand: public Command {
-private:
-public:
-};
-
-class DeleteCommand: public Command {
-private:
-public:
-};
 
 #endif //CLI_H
