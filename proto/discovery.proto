@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package discovery;
+
+message GetNodesRequest {
+}
+
+message GetNodesResponse {
+  repeated string nodes = 1;
+}
+
+message RegisterNodeRequest {
+  string node = 1;
+}
+
+message RegisterNodeResponse {
+  string message = 1;
+}
+
+service NodeDiscoveryService {
+  rpc GetNodes(GetNodesRequest) returns (GetNodesResponse);
+
+  rpc RegisterNode(RegisterNodeRequest) returns (RegisterNodeResponse);
+}
