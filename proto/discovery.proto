@@ -99,6 +99,6 @@ service NodeDiscoveryService {
   rpc GetNodes(GetNodesRequest) returns (GetNodesResponse);
   rpc GetPeers(GetPeersRequest) returns (GetPeersResponse);
   rpc GetNodeStatus(GetNodeStatusRequest) returns (GetNodeStatusResponse);
-    rpc UpdateNodeMetadata(UpdateNodeMetadataRequest) returns (UpdateNodeMetadataResponse);
-  rpc Test(google.protobuf.Empty) returns (TestMessage);
+  rpc UpdateNodeMetadata(UpdateNodeMetadataRequest) returns (UpdateNodeMetadataResponse);
+  rpc Test(Empty) returns (TestMessage);
 }

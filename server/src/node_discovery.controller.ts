@@ -18,18 +18,23 @@ export class NodeDiscoveryController {
   }
 
   @GrpcMethod('NodeDiscoveryService', 'RegisterNode')
-  registerNode(): { message: string } {
-    return { message: 'RegisterNode' };
-  }
+  registerNode(): void {}
 
   @GrpcMethod('NodeDiscoveryService', 'DeregisterNode')
-    deregisterNode(): { message: string } {
-        return { message: 'DeregisterNode' };
-    }
+  deregisterNode(): void {}
 
+  @GrpcMethod('NodeDiscoveryService', 'Heartbeat')
+  heartbeat(): void {}
 
-  // @Post('register')
-  // @Post('deregister')
-  // @Get('peers')
-  // @Get('status/:id')
+  @GrpcMethod('NodeDiscoveryService', 'GetPeers')
+  getPeers(): void {}
+
+  @GrpcMethod('NodeDiscoveryService', 'GetNodes')
+  getNodes(): void {}
+
+  @GrpcMethod('NodeDiscoveryService', 'GetNodeStatus')
+  getNodeStatus(): void {}
+
+  @GrpcMethod('NodeDiscoveryService', 'UpdateNodeMetadata')
+  updateNodeMetadata(): void {}
 }
