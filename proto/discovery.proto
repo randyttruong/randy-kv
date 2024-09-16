@@ -2,35 +2,103 @@ syntax = "proto3";
 
 package discovery;
 
-import "google/protobuf/empty.proto";
+import "./google/protobuf/empty.proto";
 
-message GetNodesRequest {
+enum NodeStatus {
+  UNKNOWN = 1;
+  ACTIVE = 2;
+  INACTIVE = 3;
+  OFFLINE = 4;
 }
 
-message GetNodesResponse {
-  repeated string nodes = 1;
+message Node {
+  string id = 1;
+  string address = 2;
+  int32 port = 3;
+  NodeStatus status = 4;
+  string last_heartbeat = 5;
 }
 
+// `/register` - RegisterNode
 message RegisterNodeRequest {
-  string node = 1;
+  string id = 1;
+  string address = 2;
+  int32 port = 3;
 }
 
 message RegisterNodeResponse {
-  string message = 1;
+  bool success = 1;
+  string message = 2;
+}
+
+// `/deregister/` - DeregisterNode
+message DeregisterNodeRequest {
+  string id = 1;
+}
+
+message DeregisterNodeResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+// `/heartbeat/` - Heartbeat
+message HeartbeatRequest {
+  string id = 1;
+}
+
+message HeartbeatResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+// `/nodes/` - GetNodes
+message GetNodesRequest {}
+message GetNodesResponse {
+  repeated Node nodes = 1;
+}
+
+
+// `/peers/` - GetPeers
+message GetPeersRequest {
+  string id = 1;
+}
+message GetPeersResponse {
+  repeated Node peers = 1;
+}
+
+
+// `/nodes/status/` - GetNodeStatus
+message GetNodeStatusRequest {
+  string id = 1;
+}
+message GetNodeStatusResponse {
+  NodeStatus status = 1;
+}
+
+// `/update-metadata/` - UpdateNodeMetadata
+message UpdateNodeMetadataRequest {
+  string id = 1;
+  string address = 2;
+  int32 port = 3;
+}
+message UpdateNodeMetadataResponse {
+  bool success = 1;
+  string message = 2;
 }
 
 message TestMessage {
   string message = 1;
 }
 
-message Empty {
-
-}
+message Empty {}
 
 service NodeDiscoveryService {
-  rpc GetNodes(GetNodesRequest) returns (GetNodesResponse);
-
   rpc RegisterNode(RegisterNodeRequest) returns (RegisterNodeResponse);
-
-  rpc Test(Empty) returns (TestMessage);
+  rpc DeregisterNode(DeregisterNodeRequest) returns (DeregisterNodeResponse);
+  rpc Heartbeat(HeartbeatRequest) returns (HeartbeatResponse);
+  rpc GetNodes(GetNodesRequest) returns (GetNodesResponse);
+  rpc GetPeers(GetPeersRequest) returns (GetPeersResponse);
+  rpc GetNodeStatus(GetNodeStatusRequest) returns (GetNodeStatusResponse);
+    rpc UpdateNodeMetadata(UpdateNodeMetadataRequest) returns (UpdateNodeMetadataResponse);
+  rpc Test(google.protobuf.Empty) returns (TestMessage);
 }
