@@ -1,5 +1,5 @@
 # Randy-KV
-Distributed, in-memory key-value database in C++ that utilizes randomized hashing for effective load balancing. 
+RandyKV is a distributed, in-memory key-value database that utilizes gossip-based communication and randomized hashing for effective load balancing. 
 
 
 # Architecture 
