@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package discovery;
 
+import "google/protobuf/empty.proto";
+
 message GetNodesRequest {
 }
 
@@ -17,8 +19,18 @@ message RegisterNodeResponse {
   string message = 1;
 }
 
+message TestMessage {
+  string message = 1;
+}
+
+message Empty {
+
+}
+
 service NodeDiscoveryService {
   rpc GetNodes(GetNodesRequest) returns (GetNodesResponse);
 
   rpc RegisterNode(RegisterNodeRequest) returns (RegisterNodeResponse);
+
+  rpc Test(Empty) returns (TestMessage);
 }
