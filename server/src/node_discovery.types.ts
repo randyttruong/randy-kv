@@ -9,42 +9,59 @@
  * Additionally, these types are consistent with the proto file.
  */
 
-export enum NodeStatus {
+export enum AgentStatus {
+    UNKNOWN = 'unknown',
     HEALTHY = 'healthy',
     UNHEALTHY = 'unhealthy',
     OFFLINE = 'offline',
-    UNKNOWN = 'unknown'
 }
 
-export interface Node {
+
+export class Agent {
+    constructor(
+        private id: string,
+        private address: string,
+        private port: number,
+        private status: AgentStatus,
+        private lastHeartbeat?: string) {};
+
+    public setID(id: string): void { this.id = id; }
+    public getID(): string { return this.id; }
+
+    public setAddress(address: string): void { this.address = address; }
+    public getAddress(): string { return this.address; }
+
+    public setPort(port: number): void { this.port = port; }
+    public getPort(): number { return this.port; }
+
+    public setStatus(status: AgentStatus): void { this.status = status; }
+    public getStatus(): AgentStatus { return this.status; }
+
+    public setLastHeartbeat(lastHeartbeat: string): void { this.lastHeartbeat = lastHeartbeat; }
+    public getLastHeartbeat(): string { return this.lastHeartbeat; }
+}
+
+export interface AgentStore {
+    [id: string]: Agent;
+}
+
+// `/register` - RegisterAgent
+export interface RegisterAgentRequest {
     id: string;
     address: string;
     port: number;
-    status: NodeStatus;
-    lastHeartbeat?: string;
 }
 
-export interface NodeStore {
-    [id: string]: Node;
-}
-
-// `/register` - RegisterNode
-export interface RegisterNodeRequest {
-    id: string;
-    address: string;
-    port: number;
-}
-
-export interface RegisterNodeResponse {
+export interface RegisterAgentResponse {
     success: boolean;
     message: string;
 }
 
-// `/deregister/` - DeregisterNode
-export interface DeregisterNodeRequest {
+// `/deregister/` - DeregisterAgent
+export interface DeregisterAgentRequest {
     id: string;
 }
-export interface DeregisterNodeResponse {
+export interface DeregisterAgentResponse {
     success: boolean;
     message: string;
 }
@@ -58,10 +75,12 @@ export interface HeartbeatResponse {
     message: string;
 }
 
-// `/nodes/` - GetNodes
-export interface GetNodesRequest {}
-export interface GetNodesResponse {
-    nodes: NodeStore;
+// `/nodes/` - GetAgents
+export interface GetAgentsRequest {}
+export interface GetAgentsResponse {
+    success: boolean;
+    message: string;
+    nodes?: AgentStore;
 }
 
 // `/peers/` - GetPeers
@@ -70,26 +89,30 @@ export interface GetPeersRequest {
 }
 
 export interface GetPeersResponse {
-    peers: NodeStore;
+    success: boolean;
+    message: string;
+    peers?: AgentStore;
 }
 
 
-// `/nodes/status/` - GetNodeStatus
-export interface GetNodeStatusRequest {
+// `/nodes/status/` - GetAgentStatus
+export interface GetAgentStatusRequest {
     id: string;
 }
-export interface GetNodeStatusResponse {
-    status: NodeStatus;
+export interface GetAgentStatusResponse {
+    success: boolean,
+    message: string;
+    status: AgentStatus;
 }
 
 
-// `/update-metadata/` - UpdateNodeMetadata
-export interface UpdateNodeMetadataRequest {
+// `/update-metadata/` - UpdateAgentMetadata
+export interface UpdateAgentMetadataRequest {
     id: string;
     address?: string;
     port?: number;
 }
-export interface UpdateNodeMetadataResponse {
+export interface UpdateAgentMetadataResponse {
     success: boolean;
     message: string;
 }

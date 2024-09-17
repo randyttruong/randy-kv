@@ -4,39 +4,39 @@ package discovery;
 
 import "./google/protobuf/empty.proto";
 
-enum NodeStatus {
+enum AgentStatus {
   UNKNOWN = 1;
-  ACTIVE = 2;
-  INACTIVE = 3;
+  HEALTHY = 2;
+  UNHEALTHY= 3;
   OFFLINE = 4;
 }
 
-message Node {
+message Agent {
   string id = 1;
   string address = 2;
   int32 port = 3;
-  NodeStatus status = 4;
+  AgentStatus status = 4;
   string last_heartbeat = 5;
 }
 
-// `/register` - RegisterNode
-message RegisterNodeRequest {
+// `/register` - RegisterAgent
+message RegisterAgentRequest {
   string id = 1;
   string address = 2;
   int32 port = 3;
 }
 
-message RegisterNodeResponse {
+message RegisterAgentResponse {
   bool success = 1;
   string message = 2;
 }
 
-// `/deregister/` - DeregisterNode
-message DeregisterNodeRequest {
+// `/deregister/` - DeregisterAgent
+message DeregisterAgentRequest {
   string id = 1;
 }
 
-message DeregisterNodeResponse {
+message DeregisterAgentResponse {
   bool success = 1;
   string message = 2;
 }
@@ -51,10 +51,12 @@ message HeartbeatResponse {
   string message = 2;
 }
 
-// `/nodes/` - GetNodes
-message GetNodesRequest {}
-message GetNodesResponse {
-  repeated Node nodes = 1;
+// `/nodes/` - GetAgents
+message GetAgentsRequest {}
+message GetAgentsResponse {
+  bool success = 1;
+  string message = 2;
+  repeated Agent nodes = 3;
 }
 
 
@@ -63,25 +65,29 @@ message GetPeersRequest {
   string id = 1;
 }
 message GetPeersResponse {
-  repeated Node peers = 1;
+  bool success = 1;
+  string message = 2;
+  repeated Agent peers = 3;
 }
 
 
-// `/nodes/status/` - GetNodeStatus
-message GetNodeStatusRequest {
+// `/nodes/status/` - GetAgentStatus
+message GetAgentStatusRequest {
   string id = 1;
 }
-message GetNodeStatusResponse {
-  NodeStatus status = 1;
+message GetAgentStatusResponse {
+  bool success = 1;
+  string message = 2;
+  AgentStatus status = 3;
 }
 
-// `/update-metadata/` - UpdateNodeMetadata
-message UpdateNodeMetadataRequest {
+// `/update-metadata/` - UpdateAgentMetadata
+message UpdateAgentMetadataRequest {
   string id = 1;
   string address = 2;
   int32 port = 3;
 }
-message UpdateNodeMetadataResponse {
+message UpdateAgentMetadataResponse {
   bool success = 1;
   string message = 2;
 }
@@ -92,13 +98,13 @@ message TestMessage {
 
 message Empty {}
 
-service NodeDiscoveryService {
-  rpc RegisterNode(RegisterNodeRequest) returns (RegisterNodeResponse);
-  rpc DeregisterNode(DeregisterNodeRequest) returns (DeregisterNodeResponse);
+service AgentDiscoveryService {
+  rpc RegisterAgent(RegisterAgentRequest) returns (RegisterAgentResponse);
+  rpc DeregisterAgent(DeregisterAgentRequest) returns (DeregisterAgentResponse);
   rpc Heartbeat(HeartbeatRequest) returns (HeartbeatResponse);
-  rpc GetNodes(GetNodesRequest) returns (GetNodesResponse);
+  rpc GetAgents(GetAgentsRequest) returns (GetAgentsResponse);
   rpc GetPeers(GetPeersRequest) returns (GetPeersResponse);
-  rpc GetNodeStatus(GetNodeStatusRequest) returns (GetNodeStatusResponse);
-  rpc UpdateNodeMetadata(UpdateNodeMetadataRequest) returns (UpdateNodeMetadataResponse);
+  rpc GetAgentStatus(GetAgentStatusRequest) returns (GetAgentStatusResponse);
+  rpc UpdateAgentMetadata(UpdateAgentMetadataRequest) returns (UpdateAgentMetadataResponse);
   rpc Test(Empty) returns (TestMessage);
 }
